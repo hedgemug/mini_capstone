@@ -11,8 +11,11 @@ class ProductsController < ApplicationController
       price: params[:price],
       image_url: params[:image_url]
     )
-    product.save
-    render json: product.as_json
+    if product.save
+      render json: product.as_json
+    else
+      render json: {errors: product.errors.full_messages, status: :unprocessable_entity}
+    end
   end
 
   def show
