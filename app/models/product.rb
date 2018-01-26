@@ -1,5 +1,7 @@
 class Product < ApplicationRecord
 
+  belongs_to :supplier #returns a single hash
+
   validates :name, presence: true, uniqueness: true, length: {minimum: 2}
   validates :price, presence: true
   validates :description, length: {in: 10..500}
@@ -25,7 +27,8 @@ class Product < ApplicationRecord
       description: description,
       tax: tax,
       total: total,
-      is_discounted: is_discounted?
+      is_discounted: is_discounted?,
+      supplier: supplier.as_json    
     }
   end
 

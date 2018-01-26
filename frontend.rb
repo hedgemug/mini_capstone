@@ -5,6 +5,7 @@ system "clear"
 puts "Welcome to my Nerd Store"
 puts "make a selection"
 puts "    [1] See all products"
+puts "    [1.5] Search by product name"
 puts "    [2] See one product"
 puts "    [3] Create a new product"
 puts "    [4] Update a product"
@@ -16,6 +17,15 @@ if input_option == "1"
   response = Unirest.get("http://localhost:3000/products")
   products = response.body
   puts JSON.pretty_generate(products)
+
+elsif input_option == "1.5"
+  puts "Enter product name: "
+  product_name = gets.chomp
+  puts "Here are all the products matching #{product_name}: "
+  response = Unirest.get("http://localhost:3000/products?search=#{product_name}")
+  products = response.body
+  puts JSON.pretty_generate(products)
+  
 elsif input_option == "2"
   print "Enter product id: "
   input_id = gets.chomp
@@ -44,7 +54,13 @@ elsif input_option == "3"
                           )
   product_data = response.body
 
-  puts JSON.pretty_generate(product_data)
+  if product_data["errors"]
+    puts "Error saving your product!"
+    puts product_data["errors"]
+  else
+    puts JSON.pretty_generate(product_data) 
+  end
+
 elsif input_option == "4"
   print "Enter product id: "
   input_id = gets.chomp
