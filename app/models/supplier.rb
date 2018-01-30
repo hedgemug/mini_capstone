@@ -1,6 +1,9 @@
 class Supplier < ApplicationRecord
 
   has_many :products #returns an array of hashes
+  # def products
+  #   Product.where(supplier_id: id)
+  # end
 
   def as_json
     {
@@ -13,3 +16,4 @@ class Supplier < ApplicationRecord
   end
 
 end
+ 

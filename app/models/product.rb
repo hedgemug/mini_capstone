@@ -1,6 +1,10 @@
 class Product < ApplicationRecord
 
+  has_many :orders
   belongs_to :supplier #returns a single hash
+  # def supplier
+  #   Supplier.find_by(id: supplier_id)
+  # end
 
   validates :name, presence: true, uniqueness: true, length: {minimum: 2}
   validates :price, presence: true
