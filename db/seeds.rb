@@ -8,3 +8,5 @@ Product.create({supplier_id: 1, name: "Space Cowboy Laser Gun", price: "170.0", 
 Product.create({supplier_id: 2, name: "DnD Dice set", price: "57.0", description: "Take down mighty dragons with this timeless set of 20 sided wonders", image_url: "https://s-media-cache-ak0.pinimg.com/736x/9c/15/7b/9c157bea5331463f9c539cbce739a4b8.jpg"})
 Product.create({supplier_id: 1, name: "Sonic Screwdriver", price: "9.0", description: "The Doctor's sciencey magic wand to get out of tight spots. Note: does not work on wood", image_url: "http://www.thinkgeek.com/images/products/zoom/imkj_12th_doc_sonic_screw_remote.jpg"})
 Product.create({supplier_id: 2, name: "Yoda sleeping bag", price: "40.0", description: "For real", image_url: "https://staticdelivery.nexusmods.com/mods/1151/images/12353-0-1461721930.png"})
+
+User.create(first_name: "Dani", last_name: "Z", email: "dani@gmail.com", password: "dani")
