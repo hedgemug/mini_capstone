@@ -53,6 +53,9 @@ while true
     print "Image Url: "
     client_params[:image_url] = gets.chomp
 
+    print "Supplier ID: "
+    client_params[:supplier_id] = gets.chomp
+
     response = Unirest.post(
                             "http://localhost:3000/products",
                             parameters: client_params
