@@ -11,10 +11,12 @@ while true
   puts "    [3] Create a new product"
   puts "    [4] Update a product"
   puts "    [5] Destroy a product"
-  puts "[6] Login"
-  puts "[7] Create an order"
-  puts "[8] See all my orders"
-  puts "[q] To quit"
+  puts "    [6] Signup"
+  puts "    [7] Login"
+  puts "    [8] Logout"
+  puts "    [9] Create an order"
+  puts "    [10] See all my orders"
+  puts "    [q] To quit"
 
   input_option = gets.chomp
 
@@ -107,6 +109,21 @@ while true
     data = response.body
     puts data["message"]
   elsif input_option == "6"
+    puts "Signup: "
+    params = {}
+    puts "First name: "
+    params[:first_name] = gets.chomp
+    puts "Last name: "
+    params[:last_name] = gets.chomp
+    puts "Email: "
+    params[:email] = gets.chomp
+    puts "Password: "
+    params[:password] = gets.chomp
+    puts "Password Confirmation: "
+    params[:password_confirmation] = gets.chomp
+    response = Unirest.post("http://localhost:3000/users", parameters: params)
+    puts JSON.pretty_generate(response.body)
+  elsif input_option == "7"
     puts "Login:"
     puts "User email: "
     input_email = gets.chomp
@@ -115,9 +132,14 @@ while true
     response = Unirest.post("http://localhost:3000/user_token", parameters: {auth: {email: input_email, password: input_password}})  
     # Save the JSON web token from the response
     jwt = response.body["jwt"]
+    p jwt
     # Include the jwt in the headers of any future web requests
     Unirest.default_header("Authorization", "Bearer #{jwt}") 
-  elsif input_option == "7"
+  elsif input_option == "8"
+    jwt = ""
+    Unirest.clear_default_headers()
+    puts "Logged out"
+  elsif input_option == "9"
     puts "Create a new order: "
     puts "Enter product id: "
     input_product_id = gets.chomp
@@ -126,7 +148,7 @@ while true
     response = Unirest.post("http://localhost:3000/orders", parameters: {product_id: input_product_id, quantity: input_quantity})
     order = response.body
     puts JSON.pretty_generate(order)
-  elsif input_option == "8"
+  elsif input_option == "10"
     puts "Here are all your orders: "
     response = Unirest.get("http://localhost:3000/orders")
     orders = response.body
