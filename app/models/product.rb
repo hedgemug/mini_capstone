@@ -1,5 +1,7 @@
 class Product < ApplicationRecord
 
+  has_many :category_products
+  has_many :categories, through: :category_products
   has_many :orders
   belongs_to :supplier #returns a single hash
   # def supplier
@@ -32,7 +34,8 @@ class Product < ApplicationRecord
       tax: tax,
       total: total,
       is_discounted: is_discounted?,
-      supplier: supplier.as_json    
+      supplier: supplier.as_json,
+      categories: categories.map { |category| category.title }    
     }
   end
 

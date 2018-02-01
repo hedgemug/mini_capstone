@@ -31,8 +31,6 @@ class ProductsController < ApplicationController
     else
       render json: {errors: product.errors.full_messages, status: :unprocessable_entity}
     end
-  else
-    render json: {message: "Unauthorized action"}, status: :unauthorized
   end
 
   def show

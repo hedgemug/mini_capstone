@@ -1,5 +1,7 @@
 require 'unirest'
 
+admin = false
+
 while true
   system "clear"
 
@@ -7,10 +9,12 @@ while true
   puts "make a selection"
   puts "    [1] See all products"
   puts "    [1.5] Search by product name"
-  puts "    [2] See one product"
-  puts "    [3] Create a new product"
-  puts "    [4] Update a product"
-  puts "    [5] Destroy a product"
+  puts "    [2] See one product and associated categories"
+  if admin
+    puts "    [3] Create a new product"
+    puts "    [4] Update a product"
+    puts "    [5] Destroy a product"
+  end
   puts "    [6] Signup"
   puts "    [7] Login"
   puts "    [8] Logout"
@@ -133,6 +137,8 @@ while true
     # Save the JSON web token from the response
     jwt = response.body["jwt"]
     p jwt
+    admin = response.body["admin"]
+    p admin
     # Include the jwt in the headers of any future web requests
     Unirest.default_header("Authorization", "Bearer #{jwt}") 
   elsif input_option == "8"
