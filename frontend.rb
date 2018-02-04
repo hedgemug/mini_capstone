@@ -20,6 +20,7 @@ while true
   puts "    [8] Logout"
   puts "    [9] Create an order"
   puts "    [10] See all my orders"
+  puts "    [cart] See my shopping cart"
   puts "    [q] To quit"
 
   input_option = gets.chomp
@@ -38,12 +39,23 @@ while true
     puts JSON.pretty_generate(products)
     
   elsif input_option == "2"
-    print "Enter product id: "
+    print "Enter product id to show: "
     input_id = gets.chomp
-
     response = Unirest.get("http://localhost:3000/products/#{input_id}")
     product = response.body
     puts JSON.pretty_generate(product)
+    puts "Press enter to continue or type 'c' to add to cart"
+    if gets.chomp == "c"
+      puts "Enter quantity to add to cart: "
+      quantity = gets.chomp
+      params = {
+        quantity: quantity,
+        product_id: input_id
+      }
+      response = Unirest.post("http://localhost:3000/carted_products", parameters: params)
+      carted_product = response.body
+      puts JSON.pretty_generate(carted_product)
+    end
   elsif input_option == "3"
     client_params = {}
 
@@ -159,6 +171,23 @@ while true
     response = Unirest.get("http://localhost:3000/orders")
     orders = response.body
     puts JSON.pretty_generate(orders)
+  elsif input_option == "cart"
+    puts "Here are all the items in your shopping cart:"
+    response = Unirest.get("http://localhost:3000/carted_products")
+    carted_products = response.body
+    puts JSON.pretty_generate(carted_products)
+    puts "Press enter to continue or press 'o' to place the order, or press 'r' to remove a product"
+    sub_option = gets.chomp
+    if sub_option == "o"
+      response = Unirest.post("http://localhost:3000/orders")
+      order = response.body
+      puts JSON.pretty_generate(order)
+    elsif sub_option == "r"
+      puts "Enter id of carted product to remove: "
+      id = gets.chomp
+      response = Unirest.delete("http://localhost:3000/carted_products/#{id}")
+      puts JSON.pretty_generate(response.body)
+    end
   elsif input_option == "q"
     puts "Goodbye!"
     break
